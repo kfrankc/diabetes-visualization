@@ -83,7 +83,13 @@ h1 {
     
 }
 */
-
+.center {
+    /*margin-left:auto;
+    margin-right:auto;
+    display:block;*/
+    position:absolute;
+    left:350px;
+}
 .Frank p {
     color: #F2F1EF;
 }
