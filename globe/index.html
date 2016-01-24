@@ -66,7 +66,7 @@
         padding: 10px;
       }
 
-      .year {
+      .series {
         font: 16px Georgia;
         line-height: 26px;
         height: 30px;
@@ -79,7 +79,7 @@
         -webkit-transition: all 0.1s ease-out;
       }
 
-      .year:hover, .year.active {
+      .series:hover, .series.active {
         font-size: 23px;
         color: #fff;
       }
@@ -98,94 +98,113 @@
         background: url(/globe/ce.png);
       }
 
-
     </style>
   </head>
   <body>
+    <div class="section-wrapper">
+      <div class="section" data-hash="a">
+        <div id="container"></div>
 
-  <div id="container"></div>
+        <div id="info">
+          <!--<strong><a href="http://www.chromeexperiments.com/globe">WebGL Globe</a></strong> <span class="bull">&bull;</span> Created by the Google Data Arts Team <span class="bull">&bull;</span>--> Data acquired from <a href="http://www.diabetesatlas.org/across-the-globe.html">Diabetes Atlas</a>
+        </div>
 
-  <div id="info">
-    <strong><a href="http://www.chromeexperiments.com/globe">WebGL Globe</a></strong> <span class="bull">&bull;</span> Created by the Google Data Arts Team <span class="bull">&bull;</span> Data acquired from <a href="http://www.diabetesatlas.org/across-the-globe.html">Diabetes Atlas</a>
-  </div>
+        <div id="currentInfo">
+          <span id="seriesA" class="series">2015</span>
+          <span id="seriesB" class="series">2013</span>
+          <span id="seriesC" class="series">2011</span>
+        </div>
 
-  <div id="currentInfo">
-    <span id="year1990" class="year">1990</span>
-    <span id="year1995" class="year">1995</span>
-    <span id="year2000" class="year">2000</span>
-  </div>
+        <div id="title">
+          World Diabetes Prevalance
+        </div>
+      </div>
+    </div>   
 
-  <div id="title">
-    World Diabetes Frequency
-  </div>
 
-  <a id="ce" href="http://www.chromeexperiments.com/globe">
-    <span>This is a Chrome Experiment</span>
-  </a>
+      <!-- <a id="ce" href="http://www.chromeexperiments.com/globe">
+        <span>This is a Chrome Experiment</span>
+      </a> -->  
+      <script src="third-party/lethargy.min.js"></script> 
+      <script src="https://rawgit.com/Olical/EventEmitter/master/EventEmitter.min.js"></script>
+      <script src="third-party/smartscroll.min.js"></script>
 
-  <script type="text/javascript" src="/globe/third-party/Detector.js"></script>
-  <script type="text/javascript" src="/globe/third-party/three.min.js"></script>
-  <script type="text/javascript" src="/globe/third-party/Tween.js"></script>
-  <script type="text/javascript" src="/globe/globe.js"></script>
-  <script type="text/javascript">
+      <script type="text/javascript" src="/globe/third-party/Detector.js"></script>
+      <script type="text/javascript" src="/globe/third-party/three.min.js"></script>
+      <script type="text/javascript" src="/globe/third-party/Tween.js"></script>
+      <script type="text/javascript" src="/globe/globe.js"></script>
+      <script type="text/javascript">
 
-    if(!Detector.webgl){
-      Detector.addGetWebGLMessage();
-    } else {
+        if(!Detector.webgl){
+          Detector.addGetWebGLMessage();
+        } else {
 
-      var years = ['1990','1995','2000'];
-      var container = document.getElementById('container');
-      var globe = new DAT.Globe(container);
+          var years = ['A','B','C'];
+          var container = document.getElementById('container');
+          var globe = new DAT.Globe(container);
 
-      console.log(globe);
-      var i, tweens = [];
-      
-      var settime = function(globe, t) {
-        return function() {
-          new TWEEN.Tween(globe).to({time: t/years.length},500).easing(TWEEN.Easing.Cubic.EaseOut).start();
-          var y = document.getElementById('year'+years[t]);
-          if (y.getAttribute('class') === 'year active') {
-            return;
+          console.log(globe);
+          var i, tweens = [];
+          
+          var settime = function(globe, t) {
+            return function() {
+              new TWEEN.Tween(globe).to({time: t/years.length},500).easing(TWEEN.Easing.Cubic.EaseOut).start();
+              var y = document.getElementById('series'+years[t]);
+              if (y.getAttribute('class') === 'series active') {
+                return;
+              }
+              var yy = document.getElementsByClassName('series');
+              for(i=0; i<yy.length; i++) {
+                yy[i].setAttribute('class','series');
+              }
+              y.setAttribute('class', 'series active');
+            };
+          };
+          
+          for(var i = 0; i<years.length; i++) {
+            var y = document.getElementById('series'+years[i]);
+            y.addEventListener('mouseover', settime(globe,i), false);
           }
-          var yy = document.getElementsByClassName('year');
-          for(i=0; i<yy.length; i++) {
-            yy[i].setAttribute('class','year');
-          }
-          y.setAttribute('class', 'year active');
-        };
-      };
-      
-      for(var i = 0; i<years.length; i++) {
-        var y = document.getElementById('year'+years[i]);
-        y.addEventListener('mouseover', settime(globe,i), false);
-      }
-      
-      var xhr;
-      TWEEN.start();
-      
-      
-      xhr = new XMLHttpRequest();
-      xhr.open('GET', '/globe/population909500.json', true);
-      xhr.onreadystatechange = function(e) {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            var data = JSON.parse(xhr.responseText);
-            window.data = data;
-            for (i=0;i<data.length;i++) {
-              globe.addData(data[i][1], {format: 'magnitude', name: data[i][0], animated: true});
+          
+          var xhr;
+          TWEEN.start();
+          
+          
+          xhr = new XMLHttpRequest();
+          xhr.open('GET', '/globe/diabetesData.json', true);
+          xhr.onreadystatechange = function(e) {
+            if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                window.data = data;
+                for (i=0;i<data.length;i++) {
+                  var j = 2;
+                  for (j = 2; j < 645; j = j + 3) {
+                    data[i][1][j] = data[i][1][j] / 1;
+                  }
+                  //var plot = data[i][1] / 29.7;
+                  globe.addData(data[i][1], {format: 'magnitude', name: data[i][0], animated: true});
+                }
+                globe.createPoints();
+                settime(globe,0)();
+                globe.animate();
+                document.body.style.backgroundImage = 'none'; // remove loading
+              }
             }
-            globe.createPoints();
-            settime(globe,0)();
-            globe.animate();
-            document.body.style.backgroundImage = 'none'; // remove loading
-          }
+          };
+          xhr.send(null);
         }
-      };
-      xhr.send(null);
-    }
 
-  </script>
-
+      </script>
+      <script>
+        var options = {
+          autoHash: true,
+          sectionScroll: true,
+          sectionWrapperSelector: ".section-wrapper",
+          sectionClass: "section"
+        };
+        $.smartscroll(options);
+      </script>
   </body>
 
 </html>

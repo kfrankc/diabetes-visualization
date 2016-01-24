@@ -1,0 +1,26 @@
+<body>
+  <div class="section-wrapper">
+    <div class="section" data-hash="section-hash-name"></div>
+    <div class="section" data-hash="section-hash-name"></div>
+  </div>
+<script src="path/to/lethargy.min.js">
+<script src="https://rawgit.com/Olical/EventEmitter/master/EventEmitter.min.js"></script>
+<script src="path/to/smartscroll.min.js">
+<script>
+  var options = {
+    mode: "vp", // "vp", "set"
+    autoHash: false,
+    sectionScroll: true,
+    initialScroll: true,
+    keepHistory: false,
+    sectionWrapperSelector: ".section-wrapper",
+    sectionClass: "section",
+    animationSpeed: 300,
+    headerHash: "header",
+    breakpoint: null,
+    eventEmitter: null,
+    dynamicHeight: false
+  };
+  $.smartscroll(options);
+</script>
+</body>
