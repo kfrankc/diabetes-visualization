@@ -74,7 +74,8 @@ p {
     margin: 0 0 25px;
     font-size: 18px;
     line-height: 1.5;
-    color: red;
+    color: #6C7A89;
+    font-weight: 100;
 }
 
 @media(min-width:767px) {
