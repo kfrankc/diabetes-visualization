@@ -17,6 +17,27 @@ html {
     height: 100%;
 }
 
+.quote {
+    padding-top: 70px;
+    padding-bottom: 40px;
+}
+
+#line_1 {
+    position: float;
+    color: #E74C3C;
+    font-weight: bold;
+    font-size: 3.3vmax;
+    width: 85%;
+}
+
+
+#line_2 {
+    
+    color: #6C7A89;
+    font-size: 2.5vmax;
+    font-weight: 100;
+}
+
 h1 {
     position: absolute;
     top: 300px;
@@ -63,9 +84,29 @@ h1 {
 }
 */
 
+.Frank p {
+    color: #F2F1EF;
+}
+
+.Iris{
+     min-height: 600px;
+    background: transparent;
+}
+
+.Frank {
+    min-height: 600px;
+    background: transparent;
+    background-color: #6C7A89;
+
+}
+
+.Nelson{
+     min-height: 600px;
+    background: transparent;
+}
 
 .parallax-window {
-    min-height: 400px;
+    min-height: 600px;
     background: transparent;
 }
 
